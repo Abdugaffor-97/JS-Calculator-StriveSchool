@@ -17,8 +17,9 @@ window.addEventListener("DOMContentLoaded", function () {
     };
 
     let operation = "";
-    let previousResult = 0;
-    const result = document.querySelector("#result");
+    let previousinput = "";
+    let currentinput = "";
+    const input = document.querySelector("#user-input");
 
     // When Function buttons clicked
     // Event handler 'click' is going to call this function
@@ -26,73 +27,47 @@ window.addEventListener("DOMContentLoaded", function () {
         const numValue = event.target.value;
         console.log(numValue);
 
-        if (result.value === "0") {
-            result.value = numValue;
+        // When a button pressed and its value was 0 then we de following!
+        if (input.value === "0") {
+            input.value = numValue;
+            // console.log(input.value);
         } else {
-            result.value += numValue;
+            // Assign new value to the #input
+            input.value += numValue;
         }
+        previousinput = input.value;
     };
 
     const funcButtonPressed = function (event) {
         const funcValue = event.target.value;
-        console.log(funcValue);
-        // Evaluating which button pressed
+        input.value = "";
+        currentinput = input.value;
+
+        console.log(currentinput);
+        console.log(previousinput);
 
         switch (funcValue) {
-            case "=":
-                switch (operation) {
-                    case "+":
-                        result.value = sum(
-                            previousResult,
-                            parseFloat(result.value)
-                        );
-                        break;
-                    case "-":
-                        result.value = diff(
-                            previousResult,
-                            parseFloat(result.value)
-                        );
-                        break;
-                    case "*":
-                        result.value = mul(
-                            previousResult,
-                            parseFloat(result.value)
-                        );
-                        break;
-                    case "/":
-                        result.value = div(
-                            previousResult,
-                            parseFloat(result.value)
-                        );
-                        break;
-                    default:
-                        console.log("Default Case");
-                }
+            case "+":
+                input.value = "";
+                input.value = previousinput + "+" + currentinput;
+                // input.value = sum(previousinput, parseFloat(input.value));
                 break;
+
             case "C":
-                // Returns everuthing to default
-                result.value = 0;
-                previousResult = 0;
-                operation = "";
-                console.log("Previous Result", previousResult);
-                console.log("operation", operation);
-                break;
+                input.value = "0";
+                previousinput = "";
+                currentinput = "";
 
-            // if the case is neither '=' or 'c' it performs the default operation
             default:
-                previousResult = parseFloat(result.value);
-                console.log("previousResult", previousResult);
-
-                operation = funcButtonPressed;
-                console.log("operation", operation);
-
-                result.value = "0";
+                console.log("Default case");
         }
     };
 
-    // Grabbing  numButtons and funcButton from DOM
+    // // Grabbing  numButtons and funcButton from DOM
     const numButtons = document.querySelectorAll(".numButton");
     const funcButtons = document.querySelectorAll(".funcButton");
+    // console.log(funcButtons);
+    // console.log(numButtons);
 
     // Cycling the elements to attcach the single <input onclick='function()'/> an onckilck event handler
     for (let button of numButtons) {
